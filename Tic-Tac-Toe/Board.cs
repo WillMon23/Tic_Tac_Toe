@@ -48,52 +48,66 @@ namespace Tic_Tac_Toe
         /// </summary>
         public void Update()
         {
-            {
-                int input = Game.GetInput();
-                if (input != -1)
-                {
-                    input--;
-
-                    int x = 2 - (input / 3);
-                    int y = (input % 3);
 
 
-                    if (SetToken(_currentToken, x, y))
-                    {
-                        _board[x, y] = _currentToken;
-                        if (_currentToken == 'x')
-                            Console.WriteLine("x has been played");
-                        else if (_currentToken == 'o')
-                            Console.WriteLine("o has been played");
-                    }
-                    else
-                    {
-
-                        Console.WriteLine("Player already played there");
-                        Console.ReadKey();
-                        return;
-                    }
+            TicingandToeing();
+            Console.ReadKey();
 
 
-                    if (_currentToken == _player1Token)
-                        _currentToken = _player2Token;
-                    else
-                        _currentToken = _player1Token;
-
-                }
-                else
-                {
-                    Console.WriteLine("Input Error >");
-                    Console.ReadKey();
-                }
-                Console.ReadKey();
-
-            }
         }
 
         public void End()
         {
 
+        }
+
+
+        public void TicingandToeing()
+        {
+
+           
+
+            int input = Game.GetInput();
+            
+
+            if (input != -1)
+            {
+                input--;
+
+                int x = 2 - (input / 3);
+                int y = (input % 3);
+
+
+                if (SetToken(_currentToken, x, y))
+                {
+                    _board[x, y] = _currentToken;
+                        Console.WriteLine(_currentToken + " has been played [" + x + "," + y + "]");
+
+                }
+                else
+                {
+
+                    Console.WriteLine("Player already played there");
+                    return;
+                }
+
+
+                if (CheckWinner(_currentToken))
+                {
+                    Console.WriteLine(_currentToken + " Has Won Token in");
+                    return;
+                }
+
+                if (_currentToken == _player1Token)
+                    _currentToken = _player2Token;
+                else
+                    _currentToken = _player1Token;
+
+            }
+            else
+                Console.WriteLine("Input Error >");
+
+            
         }
 
         /// <summary>
@@ -106,13 +120,17 @@ namespace Tic_Tac_Toe
         public bool SetToken(char token, int posX, int posY)
         {
 
+
+
             if (!(_board[posX, posY] == _player1Token || _board[posX, posY] == _player2Token))
             {
-                _board[posX, posY] = _currentToken;
+                _board[posX, posY] = token;
                 return true;
             }
             return false;
         }
+
+
 
         /// <summary>
         /// Checks to see if the tooken appear three times consecutively vertically, horizontally or diagonally
@@ -122,19 +140,67 @@ namespace Tic_Tac_Toe
         private bool CheckWinner(char token)
         {
             int count = 0;
+
+            //Horizontal
             for (int i = 0; i < _board.GetLength(0); i++)
+            {
                 for (int j = 0; j < _board.GetLength(1); j++)
                 {
-                    if (_board[i, 0] == token)
+                    if (_board[i, j] == token)
                         count++;
-                    if 
-                    
+
+                    if (count == 3)
+                        return true;
+
+                }
+                count = 0;
+            }
+
+            //Vertical
+            for (int i = 0; i < _board.GetLength(1); i++)
+            {
+                for (int j = 0; j < _board.GetLength(0); j++)
+                {
+                    if (_board[j, i] == token)
+                        count++;
+
+                    if (count == 3)
+                        return true;
+
                 }
 
+                count = 0;
+            }
 
-            
-                return false;}
-            
+            //Left To Right Diagonal
+            int I = _board.GetLength(0) - 1;
+            for (int j = 0; j < _board.GetLength(1); j++)
+            {
+                if (_board[I, j] == token)
+                    count++;
+
+                if (count == 3)
+                    return true;
+
+                I--;
+            }
+
+            //Right To Left Diagonal
+            I = _board.GetLength(1) - 1;
+            for (int j = 0; j < _board.GetLength(0); j++)
+            {
+                if (_board[j, I] == token)
+                    count++;
+
+                if (count == 3)
+                    return true;
+
+                I--;
+            }
+
+            return false; 
+        }
+                
         
 
         /// <summary>
