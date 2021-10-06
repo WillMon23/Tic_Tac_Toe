@@ -6,6 +6,7 @@ namespace Tic_Tac_Toe
 {
     class Game
     {
+        private static bool _applicationShouldExit;
         // Checks if the game has ended yet 
         private bool gameOver = false;
         // Creats an instance of a board 
@@ -57,6 +58,8 @@ namespace Tic_Tac_Toe
         {
             int choice = -1;
             if (!int.TryParse(Console.ReadLine(), out choice))
+                choice = -1;
+            if (choice > 9)
                 choice = -1;
 
             return choice;
