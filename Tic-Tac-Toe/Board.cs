@@ -186,10 +186,9 @@ namespace Tic_Tac_Toe
             }
 
             //Right To Left Diagonal
-            I = _board.GetLength(1) - 1;
             for (int j = 0; j < _board.GetLength(0); j++)
             {
-                if (_board[j, I] == token)
+                if (_board[j, j] == token)
                     count++;
 
                 if (count == 3)
